@@ -1,10 +1,27 @@
 class App {
     canvas: HTMLCanvasElement;
-    context: CanvasRenderingContext2D;
+    ctx: CanvasRenderingContext2D;
     constructor() {
         this.canvas = document.createElement("canvas");
-        this.context = this.canvas.getContext("2d");
-        document.getElementById("app").append(this.canvas);
+
+        const { canvas } = this;
+
+        this.ctx = canvas.getContext("2d");
+
+        window.addEventListener("resize", this.handleResize.bind(this), {
+            passive: true,
+        });
+        this.handleResize();
+
+        document.getElementById("app").append(canvas);
+    }
+
+    handleResize() {
+        const { canvas } = this;
+        const { clientWidth } = document.getElementById("app");
+
+        canvas.width = clientWidth;
+        canvas.height = clientWidth;
     }
 }
 
