@@ -93,7 +93,7 @@ class App {
             const { size, pipeXGap } = this;
             this.gameover = false;
 
-            this.bird.x = 0;
+            this.bird.x = 10;
             this.bird.y = size.y / 2;
 
             this.pipes.forEach((pipe, index) => {
