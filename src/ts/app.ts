@@ -92,6 +92,7 @@ class App {
         if (this.gameover) {
             const { size, pipeXGap } = this;
             this.gameover = false;
+            this.score.current = 0;
 
             this.bird.x = 10;
             this.bird.y = size.y / 2;
@@ -111,7 +112,11 @@ class App {
         this.time = timeStamp;
         (timeGap > 32 || timeGap < -32) && (timeGap = 16);
         const { ctx, size } = this;
-        console.log(timeGap);
+
+        this.score.current++;
+        const { score } = this;
+        this.score.best =
+            score.best > score.current ? score.best : score.current;
 
         // Sky
         ctx.fillStyle = "skyblue";
@@ -121,6 +126,12 @@ class App {
         this.bird.y -= this.bird.dy -= timeGap / 32;
         const { bird } = this;
         ctx.drawImage(bird.image, bird.x, bird.y, bird.size, bird.size);
+
+        // Score
+        ctx.fillStyle = "#121212";
+        ctx.font = "bold 20px 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif";
+        ctx.fillText(`Score : ${this.score.current}`, 10, 20);
+        ctx.fillText(`Best : ${this.score.best}`, 10, 45);
 
         //  Pipe
         ctx.fillStyle = "#2e7534";
