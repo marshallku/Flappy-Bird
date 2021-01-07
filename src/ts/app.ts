@@ -116,7 +116,7 @@ class App {
         (timeGap > 32 || timeGap < -32) && (timeGap = 16);
         const { ctx, size } = this;
 
-        this.score.current++;
+        this.score.current += Math.floor(timeGap / 16);
         const { score } = this;
         this.score.best =
             score.best > score.current ? score.best : score.current;
