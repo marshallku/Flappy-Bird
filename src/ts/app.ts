@@ -10,6 +10,7 @@ class App {
     start: number;
     gameover: boolean;
     pipeXGap: number;
+    difficulty: number;
     constructor() {
         this.canvas = document.createElement("canvas");
 
@@ -17,6 +18,7 @@ class App {
 
         this.ctx = canvas.getContext("2d");
         this.time = 0;
+        this.difficulty = 0;
 
         // Add Event Listener
         window.addEventListener("resize", this.handleResize.bind(this), {
@@ -93,6 +95,7 @@ class App {
             const { size, pipeXGap } = this;
             this.gameover = false;
             this.score.current = 0;
+            this.difficulty = 0;
 
             this.bird.x = 10;
             this.bird.y = size.y / 2;
@@ -117,6 +120,7 @@ class App {
         const { score } = this;
         this.score.best =
             score.best > score.current ? score.best : score.current;
+        this.difficulty = Math.min(score.current / 3000, 1.5);
 
         // Sky
         ctx.fillStyle = "skyblue";
@@ -136,7 +140,7 @@ class App {
         //  Pipe
         ctx.fillStyle = "#2e7534";
         this.pipes.forEach((pipe) => {
-            pipe.x -= timeGap / 2;
+            pipe.x -= timeGap / (2 - this.difficulty);
             if (pipe.x < -pipe.width) {
                 pipe.x = size.x;
                 pipe.topEnds = Math.random() * pipe.gap;
