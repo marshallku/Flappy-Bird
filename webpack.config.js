@@ -24,7 +24,7 @@ module.exports = (env) => {
         entry: "./src/ts/app.ts",
         devtool: isDevMode ? "eval-source-map" : false,
         output: {
-            filename: "[name].js",
+            filename: "app.js",
             sourceMapFilename: "[file].map[query]",
             path: path.resolve(__dirname, "dist"),
         },
