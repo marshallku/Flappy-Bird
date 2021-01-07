@@ -21,7 +21,7 @@ module.exports = (env) => {
 
     return {
         mode: env.mode,
-        entry: "./src/ts/main.ts",
+        entry: "./src/ts/app.ts",
         devtool: isDevMode ? "eval-source-map" : false,
         output: {
             filename: "[name].js",
