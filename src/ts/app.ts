@@ -153,12 +153,6 @@ class App {
         const { bird } = this;
         ctx.drawImage(bird.image, bird.x, bird.y, bird.size, bird.size);
 
-        // Score
-        ctx.fillStyle = "#f1f1f1";
-        ctx.font = "bold 20px 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif";
-        ctx.fillText(`Score : ${this.score.current}`, 10, 20);
-        ctx.fillText(`Best : ${this.score.best}`, 10, 45);
-
         //  Pipe
         ctx.fillStyle = "#383838";
         this.pipes.forEach((pipe) => {
@@ -190,6 +184,12 @@ class App {
                 return;
             }
         });
+
+        // Score
+        ctx.fillStyle = "#f1f1f1";
+        ctx.font = "bold 20px 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif";
+        ctx.fillText(`Score : ${this.score.current}`, 10, 20);
+        ctx.fillText(`Best : ${this.score.best}`, 10, 45);
 
         // Check Bird Died
         if (bird.y > size.y || this.gameover) {
