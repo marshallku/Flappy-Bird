@@ -1,3 +1,5 @@
+import Sky from "./Sky";
+
 class App {
     canvas: HTMLCanvasElement;
     ctx: CanvasRenderingContext2D;
@@ -10,6 +12,8 @@ class App {
     gameover: boolean;
     pipeConf: pipeConf;
     difficulty: number;
+    skyGradient: CanvasGradient;
+    sky: Sky;
     constructor() {
         this.canvas = document.createElement("canvas");
 
@@ -55,6 +59,12 @@ class App {
         // Create pipe
         this.createPipes();
 
+        // Create gradient for sky
+        this.sky = new Sky({
+            ctx: this.ctx,
+            size: this.size,
+        });
+
         // Render
         document.getElementById("app").append(canvas);
         this.render();
@@ -97,6 +107,7 @@ class App {
 
         if (isInitialized !== false) {
             this.createPipes();
+            this.sky.update();
             this.render();
             this.gameover = true;
         }
@@ -137,8 +148,7 @@ class App {
         this.difficulty = Math.min(score.current / 3000, 1.5);
 
         // Sky
-        ctx.fillStyle = "skyblue";
-        ctx.fillRect(0, 0, size.x, size.y);
+        this.sky.render(timeStamp);
 
         // Bird
         this.bird.y -= this.bird.dy -= timeGap / 32;
@@ -146,7 +156,7 @@ class App {
         ctx.drawImage(bird.image, bird.x, bird.y, bird.size, bird.size);
 
         // Score
-        ctx.fillStyle = "#121212";
+        ctx.fillStyle = "#f1f1f1";
         ctx.font = "bold 20px 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif";
         ctx.fillText(`Score : ${this.score.current}`, 10, 20);
         ctx.fillText(`Best : ${this.score.best}`, 10, 45);
