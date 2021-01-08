@@ -23,7 +23,7 @@ class App {
         window.addEventListener("resize", this.handleResize.bind(this), {
             passive: true,
         });
-        this.handleResize();
+        this.handleResize(false);
 
         window.addEventListener("click", this.handleClick.bind(this), {
             passive: true,
@@ -47,6 +47,16 @@ class App {
         };
 
         // Create pipe
+        this.createPipes();
+
+        // Render
+        document.getElementById("app").append(canvas);
+        this.render();
+        this.gameover = true;
+    }
+
+    createPipes() {
+        // Create Pipe
         this.pipeXGap = 600;
         const { pipeXGap } = this;
         this.pipes = [];
@@ -55,7 +65,6 @@ class App {
             i < max;
             i++
         ) {
-            console.log(pipeXGap + i * pipeXGap);
             this.pipes.push({
                 x: pipeXGap + i * pipeXGap,
                 width: 120,
@@ -63,14 +72,9 @@ class App {
                 topEnds: Math.random() * (this.size.y / 2),
             });
         }
-
-        // Render
-        document.getElementById("app").append(canvas);
-        this.render();
-        this.gameover = true;
     }
 
-    handleResize() {
+    handleResize(isInitialized?: boolean) {
         const { canvas } = this;
         const app = document.getElementById("app");
 
@@ -86,6 +90,12 @@ class App {
 
         canvas.width = this.size.x;
         canvas.height = this.size.y;
+
+        if (isInitialized !== false) {
+            this.createPipes();
+            this.render();
+            this.gameover = true;
+        }
     }
 
     handleClick() {
