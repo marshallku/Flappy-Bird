@@ -6,7 +6,6 @@ class App {
     score: score;
     bird: bird;
     pipes: pipe[];
-    pipe: pipe;
     start: number;
     gameover: boolean;
     pipeXGap: number;
@@ -48,7 +47,7 @@ class App {
         };
 
         // Create pipe
-        this.pipeXGap = 500;
+        this.pipeXGap = 600;
         const { pipeXGap } = this;
         this.pipes = [];
         for (
@@ -56,9 +55,10 @@ class App {
             i < max;
             i++
         ) {
+            console.log(pipeXGap + i * pipeXGap);
             this.pipes.push({
                 x: pipeXGap + i * pipeXGap,
-                width: 24,
+                width: 120,
                 gap: this.size.y / 2.5,
                 topEnds: Math.random() * (this.size.y / 2),
             });
@@ -114,7 +114,7 @@ class App {
         let timeGap = timeStamp - this.time;
         this.time = timeStamp;
         (timeGap > 32 || timeGap < -32) && (timeGap = 16);
-        const { ctx, size } = this;
+        const { ctx, size, pipeXGap } = this;
 
         this.score.current += Math.floor(timeGap / 16);
         const { score } = this;
@@ -141,12 +141,18 @@ class App {
         ctx.fillStyle = "#2e7534";
         this.pipes.forEach((pipe) => {
             pipe.x -= timeGap / (2 - this.difficulty);
-            if (pipe.x < -pipe.width) {
-                pipe.x = size.x;
+            if (pipe.x >= -pipe.width && pipe.x <= size.x + pipe.width) {
+                ctx.fillRect(pipe.x, 0, pipe.width, pipe.topEnds);
+                ctx.fillRect(
+                    pipe.x,
+                    pipe.topEnds + pipe.gap,
+                    pipe.width,
+                    size.y
+                );
+            } else if (pipe.x < -pipe.width) {
+                pipe.x = Math.ceil(size.x / pipeXGap) * pipeXGap - pipe.width;
                 pipe.topEnds = Math.random() * pipe.gap;
             }
-            ctx.fillRect(pipe.x, 0, pipe.width, pipe.topEnds);
-            ctx.fillRect(pipe.x, pipe.topEnds + pipe.gap, pipe.width, size.y);
 
             // Check Collison
             if (
