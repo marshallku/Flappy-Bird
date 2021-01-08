@@ -8,7 +8,7 @@ class App {
     pipes: pipe[];
     start: number;
     gameover: boolean;
-    pipeXGap: number;
+    pipeConf: pipeConf;
     difficulty: number;
     constructor() {
         this.canvas = document.createElement("canvas");
@@ -46,6 +46,12 @@ class App {
             best: 0,
         };
 
+        // Create Pipe Configuration
+        this.pipeConf = {
+            width: 120,
+            xGap: 600,
+        };
+
         // Create pipe
         this.createPipes();
 
@@ -57,17 +63,15 @@ class App {
 
     createPipes() {
         // Create Pipe
-        this.pipeXGap = 600;
-        const { pipeXGap } = this;
+        const { pipeConf } = this;
         this.pipes = [];
         for (
-            let i = 0, max = Math.max(this.size.x / pipeXGap, 1);
+            let i = 0, max = Math.max(this.size.x / pipeConf.xGap, 1);
             i < max;
             i++
         ) {
             this.pipes.push({
-                x: pipeXGap + i * pipeXGap,
-                width: 120,
+                x: pipeConf.xGap + i * pipeConf.xGap,
                 gap: this.size.y / 2.5,
                 topEnds: Math.random() * (this.size.y / 2),
             });
@@ -102,7 +106,7 @@ class App {
         this.bird.dy = 10;
 
         if (this.gameover) {
-            const { size, pipeXGap } = this;
+            const { size, pipeConf } = this;
             this.gameover = false;
             this.score.current = 0;
             this.difficulty = 0;
@@ -111,7 +115,7 @@ class App {
             this.bird.y = size.y / 2;
 
             this.pipes.forEach((pipe, index) => {
-                pipe.x = pipeXGap + index * pipeXGap;
+                pipe.x = pipeConf.xGap + index * pipeConf.xGap;
                 pipe.topEnds = Math.random() * (size.y / 2);
             });
 
@@ -124,7 +128,7 @@ class App {
         let timeGap = timeStamp - this.time;
         this.time = timeStamp;
         (timeGap > 32 || timeGap < -32) && (timeGap = 16);
-        const { ctx, size, pipeXGap } = this;
+        const { ctx, size, pipeConf } = this;
 
         this.score.current += Math.floor(timeGap / 16);
         const { score } = this;
@@ -151,16 +155,21 @@ class App {
         ctx.fillStyle = "#2e7534";
         this.pipes.forEach((pipe) => {
             pipe.x -= timeGap / (2 - this.difficulty);
-            if (pipe.x >= -pipe.width && pipe.x <= size.x + pipe.width) {
-                ctx.fillRect(pipe.x, 0, pipe.width, pipe.topEnds);
+            if (
+                pipe.x >= -pipeConf.width &&
+                pipe.x <= size.x + pipeConf.width
+            ) {
+                ctx.fillRect(pipe.x, 0, pipeConf.width, pipe.topEnds);
                 ctx.fillRect(
                     pipe.x,
                     pipe.topEnds + pipe.gap,
-                    pipe.width,
+                    pipeConf.width,
                     size.y
                 );
-            } else if (pipe.x < -pipe.width) {
-                pipe.x = Math.ceil(size.x / pipeXGap) * pipeXGap - pipe.width;
+            } else if (pipe.x < -pipeConf.width) {
+                pipe.x =
+                    Math.ceil(size.x / pipeConf.xGap) * pipeConf.xGap -
+                    pipeConf.width;
                 pipe.topEnds = Math.random() * pipe.gap;
             }
 

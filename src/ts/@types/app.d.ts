@@ -18,7 +18,11 @@ interface score {
 
 interface pipe {
     x: number;
-    width: number;
     gap: number;
     topEnds: number;
+}
+
+interface pipeConf {
+    width: number;
+    xGap: number;
 }
