@@ -1,4 +1,5 @@
 import Sky from "./Sky";
+import { birdImage } from "./images";
 
 class App {
     canvas: HTMLCanvasElement;
@@ -12,7 +13,6 @@ class App {
     gameover: boolean;
     pipeConf: pipeConf;
     difficulty: number;
-    skyGradient: CanvasGradient;
     sky: Sky;
     constructor() {
         this.canvas = document.createElement("canvas");
@@ -35,14 +35,12 @@ class App {
 
         // Create Bird
         this.bird = {
-            image: new Image(),
+            image: birdImage,
             x: 10,
             y: this.size.y / 2,
             dy: 0,
             size: 50,
         };
-        this.bird.image.src =
-            "https://marshall-ku.com/wp-content/uploads/2020/02/rose.svg";
 
         // Create Score
         this.score = {
@@ -162,7 +160,7 @@ class App {
         ctx.fillText(`Best : ${this.score.best}`, 10, 45);
 
         //  Pipe
-        ctx.fillStyle = "#2e7534";
+        ctx.fillStyle = "#383838";
         this.pipes.forEach((pipe) => {
             pipe.x -= timeGap / (2 - this.difficulty);
             if (
