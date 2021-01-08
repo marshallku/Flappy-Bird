@@ -76,7 +76,7 @@ class App {
         const { pipeConf } = this;
         this.pipes = [];
         for (
-            let i = 0, max = Math.max(this.size.x / pipeConf.xGap, 1);
+            let i = 0, max = Math.max(this.size.x / pipeConf.xGap + 1, 2);
             i < max;
             i++
         ) {
@@ -178,7 +178,7 @@ class App {
                 );
             } else if (pipe.x < -pipeConf.width) {
                 pipe.x =
-                    Math.ceil(size.x / pipeConf.xGap) * pipeConf.xGap -
+                    (Math.ceil(size.x / pipeConf.xGap) + 1) * pipeConf.xGap -
                     pipeConf.width;
                 pipe.topEnds = Math.random() * pipe.gap;
             }
