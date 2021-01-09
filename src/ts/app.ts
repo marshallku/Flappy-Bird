@@ -14,6 +14,7 @@ class App {
     pipeConf: pipeConf;
     difficulty: number;
     sky: Sky;
+    gameStarted: boolean;
     constructor() {
         this.canvas = document.createElement("canvas");
 
@@ -65,8 +66,9 @@ class App {
 
         // Render
         document.getElementById("app").append(canvas);
-        this.render();
-        this.gameover = true;
+        this.initialRender();
+        this.gameover = false;
+        this.gameStarted = false;
     }
 
     createPipes() {
@@ -130,10 +132,47 @@ class App {
 
             this.time = performance.now();
             this.render();
+        } else if (!this.gameStarted) {
+            this.gameStarted = true;
+            this.render();
         }
     }
 
+    initialRender() {
+        const { ctx, size, pipeConf, bird } = this;
+
+        // Sky
+        this.sky.render(0);
+
+        // Bird
+        ctx.drawImage(bird.image, bird.x, bird.y, bird.size, bird.size);
+
+        //  Pipe
+        ctx.fillStyle = "#383838";
+        this.pipes.forEach((pipe) => {
+            if (
+                pipe.x >= -pipeConf.width &&
+                pipe.x <= size.x + pipeConf.width
+            ) {
+                ctx.fillRect(pipe.x, 0, pipeConf.width, pipe.topEnds);
+                ctx.fillRect(
+                    pipe.x,
+                    pipe.topEnds + pipe.gap,
+                    pipeConf.width,
+                    size.y
+                );
+            }
+        });
+
+        // Score
+        ctx.fillStyle = "#f1f1f1";
+        ctx.font = "bold 20px 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif";
+        ctx.fillText(`Score : ${this.score.current}`, 10, 20);
+        ctx.fillText(`Best : ${this.score.best}`, 10, 45);
+    }
+
     render(timeStamp: number = 16) {
+        console.log("rendered");
         let timeGap = timeStamp - this.time;
         this.time = timeStamp;
         (timeGap > 32 || timeGap < -32) && (timeGap = 16);
