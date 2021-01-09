@@ -29,7 +29,7 @@ class App {
         });
         this.handleResize(false);
 
-        window.addEventListener("click", this.handleClick.bind(this), {
+        canvas.addEventListener("click", this.handleClick.bind(this), {
             passive: true,
         });
 
