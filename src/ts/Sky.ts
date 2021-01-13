@@ -2,8 +2,10 @@ export default class Sky {
     props: skyProps;
     skyGradient: CanvasGradient;
     stars: star[];
+    renderStars: boolean;
     constructor(props: skyProps) {
         this.props = props;
+        this.renderStars = true;
         this.update();
     }
 
@@ -11,7 +13,13 @@ export default class Sky {
         return Math.floor(Math.random() * max);
     }
 
+    toggleRenderStars() {
+        this.renderStars = !this.renderStars;
+        return this.renderStars;
+    }
+
     createStars(spacing: number): star[] {
+        if (!this.renderStars) return;
         const arr = [];
         const { size } = this.props;
 
@@ -55,7 +63,7 @@ export default class Sky {
         this.skyGradient.addColorStop(0, "#00111e");
         this.skyGradient.addColorStop(1, "#0a2342");
 
-        this.stars = this.createStars(30);
+        if (this.renderStars) this.stars = this.createStars(30);
     }
 
     render(timeStamp: number) {
@@ -65,6 +73,7 @@ export default class Sky {
         ctx.fillStyle = this.skyGradient;
         ctx.fillRect(0, 0, this.props.size.x, this.props.size.y);
 
+        if (!this.renderStars) return;
         this.stars.forEach((star, index) => {
             this.fillCircle(
                 star.x,

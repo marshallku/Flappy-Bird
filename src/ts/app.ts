@@ -71,6 +71,10 @@ class App {
         this.gameStarted = false;
     }
 
+    toggleStars() {
+        return this.sky.toggleRenderStars();
+    }
+
     createPipes() {
         // Create Pipe
         const { pipeConf } = this;
@@ -240,5 +244,12 @@ class App {
 }
 
 window.addEventListener("load", () => {
-    new App();
+    const starToggle = document.getElementById("star-toggle");
+    const app = new App();
+
+    starToggle.addEventListener("click", () => {
+        let status = app.toggleStars();
+
+        starToggle.className = `${status ? "active" : ""}`;
+    });
 });
