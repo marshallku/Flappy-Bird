@@ -5,7 +5,7 @@ export default class Sky {
     renderStars: boolean;
     constructor(props: skyProps) {
         this.props = props;
-        this.renderStars = true;
+        this.renderStars = this.props.renderStars;
         this.update();
     }
 

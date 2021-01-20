@@ -1,5 +1,7 @@
 import Sky from "./Sky";
 import { birdImage } from "./images";
+import { user, getUserData, saveUserData } from "./User";
+import { start } from "repl";
 
 class App {
     canvas: HTMLCanvasElement;
@@ -15,7 +17,7 @@ class App {
     difficulty: number;
     sky: Sky;
     gameStarted: boolean;
-    constructor() {
+    constructor({ user }: { user: user }) {
         this.canvas = document.createElement("canvas");
 
         const { canvas } = this;
@@ -46,7 +48,7 @@ class App {
         // Create Score
         this.score = {
             current: 0,
-            best: 0,
+            best: user.score,
         };
 
         // Create Pipe Configuration
@@ -62,6 +64,7 @@ class App {
         this.sky = new Sky({
             ctx: this.ctx,
             size: this.size,
+            renderStars: user.renderStars,
         });
 
         // Render
@@ -139,6 +142,16 @@ class App {
         } else if (!this.gameStarted) {
             this.gameStarted = true;
             this.render();
+        }
+    }
+
+    handleGameOver() {
+        const { best } = this.score;
+
+        this.gameover = true;
+        if (best > user.score) {
+            user.score = best;
+            saveUserData();
         }
     }
 
@@ -223,8 +236,7 @@ class App {
                 (bird.y < pipe.topEnds || bird.y > pipe.topEnds + pipe.gap) &&
                 pipe.x < bird.size
             ) {
-                this.gameover = true;
-                return;
+                return this.handleGameOver();
             }
         });
 
@@ -236,20 +248,25 @@ class App {
 
         // Check Bird Died
         if (bird.y > size.y || this.gameover) {
-            this.gameover = true;
-            return;
+            return this.handleGameOver();
         }
         window.requestAnimationFrame(this.render.bind(this));
     }
 }
 
 window.addEventListener("load", () => {
+    getUserData();
+
     const starToggle = document.getElementById("star-toggle");
-    const app = new App();
+    const app = new App({ user });
+
+    user.renderStars === false && starToggle.classList.remove("active");
 
     starToggle.addEventListener("click", () => {
-        let status = app.toggleStars();
+        const status = app.toggleStars();
 
         starToggle.className = `${status ? "active" : ""}`;
+        user.renderStars = status;
+        saveUserData();
     });
 });
