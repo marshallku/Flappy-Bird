@@ -1,6 +1,7 @@
 interface skyProps {
     ctx: CanvasRenderingContext2D;
     size: size;
+    renderStars: boolean;
 }
 
 interface star {

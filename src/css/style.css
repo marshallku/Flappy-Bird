@@ -17,3 +17,31 @@ body {
     height: 100%;
     overflow: hidden;
 }
+
+#star-toggle {
+    position: fixed;
+    left: 10px;
+    bottom: 10px;
+    display: flex;
+    width: 30px;
+    height: 30px;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.25);
+    border: 0;
+}
+
+#star-toggle:not(:focus-visible) {
+    outline: 0;
+}
+
+#star-toggle > svg {
+    opacity: 0.25;
+    transition: opacity 0.25s ease-in-out, fill 0.25s ease-in-out;
+}
+
+#star-toggle.active > svg {
+    fill: yellow;
+    opacity: 1;
+}
