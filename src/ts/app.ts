@@ -1,7 +1,6 @@
 import Sky from "./Sky";
 import { birdImage } from "./images";
 import { user, getUserData, saveUserData } from "./User";
-import { start } from "repl";
 
 class App {
     canvas: HTMLCanvasElement;
@@ -33,6 +32,10 @@ class App {
         this.handleResize(false);
 
         canvas.addEventListener("click", this.handleClick.bind(this), {
+            passive: true,
+        });
+
+        window.addEventListener("keydown", this.handleClick.bind(this), {
             passive: true,
         });
 
