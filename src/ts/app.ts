@@ -201,9 +201,8 @@ class App {
     }
 
     render(timeStamp: number = 16) {
-        let timeGap = timeStamp - this.time;
-        this.time = timeStamp;
-        (timeGap > 32 || timeGap < -32) && (timeGap = 16);
+        const rawTimeGap = timeStamp - this.time;
+        const timeGap = 32 < Math.abs(rawTimeGap) ? 16 : rawTimeGap;
         const { ctx, size, pipeConf } = this;
 
         this.time = timeStamp;
