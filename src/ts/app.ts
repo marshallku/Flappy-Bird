@@ -9,12 +9,12 @@ class App {
     canvas: HTMLCanvasElement;
     ctx: CanvasRenderingContext2D;
     time: number;
-    size: size;
-    score: score;
-    bird: bird;
-    pipes: pipe[];
+    size: Size;
+    score: Score;
+    bird: Bird;
+    pipes: Pipe[];
     gameover: boolean;
-    pipeConf: pipeConf;
+    pipeConf: PipeConf;
     difficulty: number;
     sky: Sky;
     gameStarted: boolean;

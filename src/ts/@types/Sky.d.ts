@@ -1,4 +1,4 @@
 interface SkyProps {
     ctx: CanvasRenderingContext2D;
-    size: size;
+    size: Size;
 }

@@ -1,4 +1,4 @@
-interface bird {
+interface Bird {
     image: HTMLImageElement;
     x: number;
     y: number;
@@ -6,23 +6,23 @@ interface bird {
     size: number;
 }
 
-interface size {
+interface Size {
     x: number;
     y: number;
 }
 
-interface score {
+interface Score {
     current: number;
     best: number;
 }
 
-interface pipe {
+interface Pipe {
     x: number;
     gap: number;
     topEnds: number;
 }
 
-interface pipeConf {
+interface PipeConf {
     width: number;
     xGap: number;
 }
