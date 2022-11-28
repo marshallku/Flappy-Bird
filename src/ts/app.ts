@@ -13,7 +13,7 @@ class App {
     score: Score;
     bird: Bird;
     pipes: Pipe[];
-    gameover: boolean;
+    gameOvered: boolean;
     pipeConf: PipeConf;
     difficulty: number;
     sky: Sky;
@@ -86,7 +86,7 @@ class App {
         // Render
         app.append(canvas);
         this.initialRender();
-        this.gameover = false;
+        this.gameOvered = false;
         this.gameStarted = false;
     }
 
@@ -128,15 +128,16 @@ class App {
 
         this.createPipes();
         this.render();
-        this.gameover = true;
+        this.gameOvered = true;
     }
 
     handleClick() {
         this.bird.dy = 10;
 
-        if (this.gameover) {
+        if (this.gameOvered) {
             const { size, pipeConf } = this;
-            this.gameover = false;
+
+            this.gameOvered = false;
             this.score.current = 0;
             this.difficulty = 0;
 
@@ -159,7 +160,7 @@ class App {
     handleGameOver() {
         const { best } = this.score;
 
-        this.gameover = true;
+        this.gameOvered = true;
         if (best > user.score) {
             user.score = best;
             saveUserData();
@@ -205,8 +206,11 @@ class App {
         (timeGap > 32 || timeGap < -32) && (timeGap = 16);
         const { ctx, size, pipeConf } = this;
 
+        this.time = timeStamp;
         this.score.current += Math.floor(timeGap / 16);
+
         const { score } = this;
+
         this.score.best =
             score.best > score.current ? score.best : score.current;
         this.difficulty = Math.min(score.current / 3000, 1.5);
@@ -216,7 +220,9 @@ class App {
 
         // Bird
         this.bird.y -= this.bird.dy -= timeGap / 32;
+
         const { bird } = this;
+
         ctx.drawImage(bird.image, bird.x, bird.y, bird.size, bird.size);
 
         //  Pipe
@@ -257,7 +263,7 @@ class App {
         ctx.fillText(`Best : ${this.score.best}`, 10, 45);
 
         // Check Bird Died
-        if (bird.y > size.y || this.gameover) {
+        if (bird.y > size.y || this.gameOvered) {
             return this.handleGameOver();
         }
         window.requestAnimationFrame(this.render.bind(this));
