@@ -1,6 +1,9 @@
 import Sky from "./Sky";
 import { birdImage } from "./images";
 import { user, getUserData, saveUserData } from "./User";
+import "../css/style.css";
+
+const app = document.getElementById("app")!;
 
 class App {
     canvas: HTMLCanvasElement;
@@ -10,7 +13,6 @@ class App {
     score: score;
     bird: bird;
     pipes: pipe[];
-    start: number;
     gameover: boolean;
     pipeConf: pipeConf;
     difficulty: number;
@@ -20,16 +22,26 @@ class App {
         this.canvas = document.createElement("canvas");
 
         const { canvas } = this;
+        const context = canvas.getContext("2d");
 
-        this.ctx = canvas.getContext("2d");
+        if (!context) {
+            throw new Error();
+        }
+
+        this.ctx = context;
         this.time = 0;
         this.difficulty = 0;
+
+        const { x, y } = this.getSize();
 
         // Add Event Listener
         window.addEventListener("resize", this.handleResize.bind(this), {
             passive: true,
         });
-        this.handleResize(false);
+
+        this.size = { x, y };
+        canvas.width = x;
+        canvas.height = y;
 
         canvas.addEventListener("click", this.handleClick.bind(this), {
             passive: true,
@@ -47,6 +59,8 @@ class App {
             dy: 0,
             size: 50,
         };
+
+        this.pipes = [];
 
         // Create Score
         this.score = {
@@ -71,7 +85,7 @@ class App {
         });
 
         // Render
-        document.getElementById("app").append(canvas);
+        app.append(canvas);
         this.initialRender();
         this.gameover = false;
         this.gameStarted = false;
@@ -98,29 +112,27 @@ class App {
         }
     }
 
-    handleResize(isInitialized?: boolean) {
-        const { canvas } = this;
-        const app = document.getElementById("app");
+    getSize() {
+        return {
+            x: app.clientWidth,
+            y: app.clientHeight,
+        };
+    }
 
-        if (this.size) {
-            this.size.x = app.clientWidth;
-            this.size.y = app.clientHeight;
-        } else {
-            this.size = {
-                x: app.clientWidth,
-                y: app.clientHeight,
-            };
-        }
+    handleResize() {
+        const { canvas } = this;
+        const { x, y } = this.getSize();
+
+        this.size.x = x;
+        this.size.y = y;
 
         canvas.width = this.size.x;
         canvas.height = this.size.y;
 
-        if (isInitialized !== false) {
-            this.createPipes();
-            this.sky.update();
-            this.render();
-            this.gameover = true;
-        }
+        this.createPipes();
+        this.sky.update();
+        this.render();
+        this.gameover = true;
     }
 
     handleClick() {
@@ -260,7 +272,7 @@ class App {
 window.addEventListener("load", () => {
     getUserData();
 
-    const starToggle = document.getElementById("star-toggle");
+    const starToggle = document.getElementById("star-toggle")!;
     const app = new App({ user });
 
     user.renderStars === false && starToggle.classList.remove("active");
