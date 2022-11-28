@@ -1,5 +1,7 @@
 # Javascript Flappy Bird
 
-![Screenshot](https://blog.kakaocdn.net/dn/bzeK7P/btq66t9DwU5/p3iCrqrxWfgKramcaRwPjK/img.png)
+> ⚠️ Refactoring 2-year-old code in progress.
+
+![Screenshot](https://i.imgur.com/CL8HUqI.png)
 
 [Live Preview](https://marshallku.github.io/Flappy-Bird/)
