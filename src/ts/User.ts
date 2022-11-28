@@ -1,6 +1,5 @@
-export const user: user = {
+export const user: User = {
     score: 0,
-    renderStars: true,
 };
 
 export function getUserData() {
@@ -11,7 +10,6 @@ export function getUserData() {
         const parsed = JSON.parse(localData);
 
         user.score = parsed.score;
-        user.renderStars = parsed.renderStars;
     } catch (error) {
         console.error(error);
     }

@@ -1,4 +1,3 @@
-interface user {
+interface User {
     score: number;
-    renderStars: boolean;
 }
