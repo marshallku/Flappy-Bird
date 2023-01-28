@@ -206,13 +206,13 @@ class App {
         const { ctx, size, pipeConf } = this;
 
         this.time = timeStamp;
-        this.score.current += Math.floor(timeGap / 16);
+        this.score.current += Math.floor(timeGap);
 
         const { score } = this;
 
         this.score.best =
             score.best > score.current ? score.best : score.current;
-        this.difficulty = Math.min(score.current / 3000, 1.5);
+        this.difficulty = Math.min(score.current / (3000 * 16), 1.5);
 
         // Sky
         this.sky.render();
